@@ -8,7 +8,7 @@ export class Comments extends BaseEntity {
   @Column({ type: 'varchar', length: 255, nullable: true })
   comment: string;
 
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'timestamptz' })
   createDate: string;
   
 }

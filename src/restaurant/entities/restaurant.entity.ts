@@ -5,6 +5,6 @@ export class Restaurant extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ type: 'varchar', length: 30, nullable: false })
+  @Column({ type: 'varchar', length: 30 })
   name: string;
 }
