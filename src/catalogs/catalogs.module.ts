@@ -4,10 +4,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CatalogRepository } from './entities/catalog.repository';
 import { CatalogsController } from './catalogs.controller';
 import { CatalogsService } from './catalogs.service';
+import { CatalogFoodRelationRepository } from './entities/catalog-food-relation.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CatalogRepository]),
+    TypeOrmModule.forFeature([
+      CatalogRepository,
+      CatalogFoodRelationRepository
+    ]),
     AuthModule
   ],
   controllers: [CatalogsController],

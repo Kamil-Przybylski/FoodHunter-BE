@@ -1,4 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, ManyToOne } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { User } from 'src/auth/entities/user.entity';
+import { Food } from 'src/food/entites/food.entity';
 
 @Entity()
 export class Comments extends BaseEntity {
@@ -10,5 +12,18 @@ export class Comments extends BaseEntity {
 
   @Column({ type: 'timestamptz' })
   createDate: string;
+
+
+  @Column()
+  userId: number
+  @ManyToOne(type => User, user => user.foods, { eager: false })
+  @JoinColumn({name: 'userId'})
+  user: User;
+
+  @Column()
+  foodId: number
+  @ManyToOne(type => Food, food => food.comments, { eager: false })
+  @JoinColumn({name: 'foodId'})
+  food: Food;
   
 }

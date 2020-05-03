@@ -4,10 +4,14 @@ import { TagRepository } from './entities/tag.repository';
 import { TagsController } from './tags.controller';
 import { TagsService } from './tags.service';
 import { AuthModule } from 'src/auth/auth.module';
+import { TagFoodRelationRepository } from './entities/tag-food-relation.repository';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([TagRepository]),
+    TypeOrmModule.forFeature([
+      TagRepository,
+      TagFoodRelationRepository
+  ]),
     AuthModule
   ],
   controllers: [TagsController],

@@ -7,6 +7,7 @@ import { CommentsModule } from './comments/comments.module';
 import { TagsModule } from './tags/tags.module';
 import { AuthModule } from './auth/auth.module';
 import { typeOrmConfig } from './typeorm.config';
+import { FoodTypesModule } from './food-types/food-types.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { typeOrmConfig } from './typeorm.config';
     CatalogsModule,
     RestaurantModule,
     CommentsModule,
-    TagsModule
+    TagsModule,
+    FoodTypesModule
   ],
   controllers: [],
   providers: [],

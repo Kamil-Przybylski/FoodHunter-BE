@@ -1,5 +1,8 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Comments } from './../../comments/entities/comment.entity';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Food } from 'src/food/entites/food.entity';
+import { Catalog } from 'src/catalogs/entities/catalog.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -29,6 +32,16 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   about: string;
+
+
+  @OneToMany(type => Food, food => food.user, { eager: true })
+  foods: Food[];
+
+  @OneToMany(type => Catalog, catalog => catalog.user, { eager: true })
+  catalogs: Catalog[];
+
+  @OneToMany(type => Comments, comments => comments.user, { eager: true })
+  comments: Comments[];
 
 
   async validatePassword(password: string): Promise<boolean> {

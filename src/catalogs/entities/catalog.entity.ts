@@ -1,4 +1,6 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { User } from 'src/auth/entities/user.entity';
+import { CatalogFoodRelation } from './catalog-food-relation.entity';
 
 @Entity()
 export class Catalog extends BaseEntity {
@@ -16,5 +18,15 @@ export class Catalog extends BaseEntity {
 
   @Column({ type: 'timestamptz' })
   createDate: string;
+
+
+  @Column()
+  userId: number
+  @ManyToOne(type => User, user => user.foods, { eager: false })
+  @JoinColumn({name: 'userId'})
+  user: User;
+
+  @OneToMany(type => CatalogFoodRelation, catalogFoodRelation => catalogFoodRelation.catalog, { eager: true })
+  catalogFoodRelations: CatalogFoodRelation[];
 
 }
