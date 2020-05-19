@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthService } from './auth.service';
+import { AuthService } from './auth.service'; 
 import { UserRepository } from './entities/user.repository';
 import { JwtStrategy } from './jwt.strategy';
 import { PassportModule } from '@nestjs/passport';
@@ -30,3 +30,4 @@ const jwtConfig = config.get('jwt');
   ]
 })
 export class AuthModule {}
+

@@ -30,6 +30,10 @@ export class AuthService {
     return { accessToken, user: new UserDto(user) };
   }
 
+  async login(user: User): Promise<UserDto> {
+    return new UserDto(user);
+  }
+
   async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User, userId: number): Promise<UserDto> {
     if (userId !== userUpdateInfoDto.id) throw new NotFoundException('userId from path is not equal to userId from DTO');
     

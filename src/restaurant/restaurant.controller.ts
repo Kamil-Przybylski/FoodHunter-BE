@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
 import { RestaurantService } from './restaurant.service';
-import { CreateRestaurantDto, RestaurantDto } from './models/restaurant.models';
+import { CreateSingleRestaurantDto, RestaurantDto } from './models/restaurant.models';
 
 @Controller('restaurant')
 @UseGuards(AuthGuard())
@@ -20,7 +20,7 @@ export class RestaurantController {
 
   @Post()
   createRestaurants(
-    @Body(ValidationPipe) createRestaurantDto: CreateRestaurantDto,
+    @Body(ValidationPipe) createRestaurantDto: CreateSingleRestaurantDto,
     @GetUser() user: User
   ): Promise<RestaurantDto> {
     return this.restaurantService.createRestaurants(createRestaurantDto, user);

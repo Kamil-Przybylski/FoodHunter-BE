@@ -14,10 +14,13 @@ export class Food extends BaseEntity {
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
+  @Column({ type: 'timestamptz' })
+  createDate: string;
+
   @Column({ type: 'varchar', length: 255, nullable: true })
   description: string;
 
-  @Column({ type: 'int', nullable: true })
+  @Column({ type: 'decimal', nullable: true })
   rate: number;
 
   @Column({ type: 'boolean', select: false })
@@ -38,8 +41,8 @@ export class Food extends BaseEntity {
   @JoinColumn({name: 'userId'})
   user: User;
 
-  @Column()
-  restaurantId: number
+  @Column({ type: 'varchar'})
+  restaurantId: string
   @ManyToOne(type => Restaurant, restaurant => restaurant.foods, { eager: false })
   @JoinColumn({name: 'restaurantId'})
   restaurant: Restaurant;

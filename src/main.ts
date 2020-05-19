@@ -7,6 +7,7 @@ async function bootstrap() {
   const serverConfig = config.get('server');
   const loger = new Logger('bootstrap');
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('fh');
 
   const port = process.env.PORT || serverConfig.port;
   await app.listen(port);

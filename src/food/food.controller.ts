@@ -1,30 +1,65 @@
-import { Controller, Get, Post, Body, UsePipes, ValidationPipe, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UsePipes,
+  ValidationPipe,
+  UseGuards,
+  UseInterceptors,
+  UploadedFile,
+} from '@nestjs/common';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { FoodService } from './food.service';
-import { FoodDto, CreateFoodDto } from './models/food.models';
+import {
+  FoodDto,
+  CreateFoodDto,
+  UnparsedCreateFoodDto,
+} from './models/food.models';
 import { User } from 'src/auth/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
+import { imageFileFilter, editFileName } from 'src/file.utils';
+import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
 
 @Controller('food')
 @UseGuards(AuthGuard())
 export class FoodController {
-
-  constructor(private readonly foodService: FoodService) { }
+  constructor(
+    private readonly foodService: FoodService,
+  ) {}
 
   @Get()
   getFoods(
-    @GetUser() user: User
+    @GetUser() user: User,
   ): Promise<FoodDto[]> {
-    return this.foodService.getFoods(user);
+    return this.foodService.getFoods(
+      user,
+    );
   }
 
   @Post()
-  @UseGuards(AuthGuard())
+  @UseInterceptors(
+    FileInterceptor('photo', {
+      storage: diskStorage({
+        destination: './uploads/foods',
+        filename: editFileName,
+      }),
+      fileFilter: imageFileFilter,
+    })
+  )
   createFood(
-    @Body(ValidationPipe) createFoodDto: CreateFoodDto,
-    @GetUser() user: User
+    @Body(ValidationPipe)
+    createFoodDto: UnparsedCreateFoodDto,
+    @UploadedFile() photo: any,
+    @GetUser() user: User,
   ): Promise<FoodDto> {
-    return this.foodService.createFood(createFoodDto, user);
+    return this.foodService.createFood(
+      new CreateFoodDto(createFoodDto, photo.filename, 'uploads/foods'),
+      new CreateRestaurantDto(createFoodDto),
+      user,
+    );
   }
-  
+
 }
