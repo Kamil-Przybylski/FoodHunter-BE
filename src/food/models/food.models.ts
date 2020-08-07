@@ -113,7 +113,7 @@ export class FoodDto { // FRONT-END DTO
   restaurant: RestaurantDto;
   foodTypeId: number;
 
-  constructor(food: Food, restaurant?: Restaurant) {
+  constructor(food: Food) {
     this.id = food.id;
     this.name = food.name;
     this.description = food.description;
@@ -127,6 +127,6 @@ export class FoodDto { // FRONT-END DTO
 
     this.restaurantId = food.restaurantId;
     this.foodTypeId = food.foodTypeId;
-    this.restaurant = restaurant ? new RestaurantDto(restaurant) : new RestaurantDto(food.restaurant);
+    this.restaurant = new RestaurantDto(food.restaurant);
   }
 }

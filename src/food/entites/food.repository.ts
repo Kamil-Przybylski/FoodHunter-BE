@@ -8,6 +8,8 @@ import { CreateFoodDto } from '../models/food.models';
 import { InternalServerErrorException } from '@nestjs/common';
 import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
 import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @EntityRepository(Food)
 export class FoodRepository extends Repository<
@@ -81,7 +83,7 @@ export class FoodRepository extends Repository<
     createFoodDto: CreateFoodDto,
     createRestaurantDto: CreateRestaurantDto,
     user: User,
-  ): Promise<{food: Food, restaurant: Restaurant}> {
+  ): Promise<Food> {
 
     const restaurant = new Restaurant();
     restaurant.id = createRestaurantDto.id;
@@ -103,17 +105,23 @@ export class FoodRepository extends Repository<
     food.createDate = new Date().toISOString();
  
     food.userId = user.id;
+    food.restaurant = restaurant;
     food.restaurantId = createRestaurantDto.id;
     food.foodTypeId = createFoodDto.foodTypeId;
     
     try {
       await restaurant.save();
-      await food.save();
     } catch (error) {
       console.log(error);
       throw new InternalServerErrorException();
     }
+    try {
+      await food.save();
+    } catch (error) {
+      fs.unlinkSync(path.join(__dirname, '../../../', food.photoPath));
+      throw new InternalServerErrorException();
+    }
 
-    return {food, restaurant};
+    return food;
   }
 }

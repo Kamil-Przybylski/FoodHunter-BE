@@ -29,11 +29,11 @@ export class FoodService {
     createRestaurantDto: CreateRestaurantDto,
     user: User,
   ): Promise<FoodDto> {
-    const foodWithRestaurant = await this.foodRepository.createOneWithRestaurant(
+    const food = await this.foodRepository.createOneWithRestaurant(
       createFoodDto,
       createRestaurantDto,
       user,
     );
-    return new FoodDto(foodWithRestaurant.food, foodWithRestaurant.restaurant);
+    return new FoodDto(food);
   }
 }
