@@ -62,7 +62,8 @@ export class UserUpdateInfoDto {
   about: string;
 }
 
-export class UserDto { // FRONT-END DTO
+export class UserAuthDto { // FRONT-END DTO
+  id: number;
   username: string;
   email: string;
   birthDate: string;
@@ -70,10 +71,23 @@ export class UserDto { // FRONT-END DTO
   about: string;
 
   constructor(user: User) {
-    this.username = user.username;
+    this.id = user.id;
+    this.username = user.username; 
     this.email = user.email;
     this.birthDate = user.birthDate;
     this.photoPath = user.photoPath;
     this.about = user.about;
+  }
+}
+
+export class UserDto { // FRONT-END DTO
+  id: number;
+  username: string;
+  photoPath: string;
+
+  constructor(user: User) {
+    this.id = user.id;
+    this.username = user.username; 
+    this.photoPath = user.photoPath;
   }
 }

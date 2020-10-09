@@ -1,4 +1,4 @@
-import { UserDto } from "./auth.models";
+import { UserAuthDto } from "./auth.models";
 
 export interface JwtPayload {
   username: string;
@@ -6,5 +6,5 @@ export interface JwtPayload {
 
 export interface AccessToken {
   accessToken: string;
-  user: UserDto;
+  user: UserAuthDto;
 }

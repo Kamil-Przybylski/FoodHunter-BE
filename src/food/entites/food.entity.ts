@@ -23,13 +23,13 @@ export class Food extends BaseEntity {
   @Column({ type: 'decimal', nullable: true })
   rate: number;
 
-  @Column({ type: 'boolean', select: false })
+  @Column({ type: 'boolean' })
   isFavorite: boolean;
 
-  @Column({ type: 'boolean', select: false })
+  @Column({ type: 'boolean' })
   isPrivate: boolean;
 
-  @Column({ type: 'boolean', select: false })
+  @Column({ type: 'boolean' })
   isPlanned: boolean;
 
   @Column({ type: 'varchar', length: 200, nullable: true })

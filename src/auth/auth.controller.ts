@@ -1,6 +1,6 @@
 import { AuthService } from './auth.service';
 import { Controller, Post, Body, ValidationPipe, Param, ParseIntPipe, UseGuards, Patch, Get } from '@nestjs/common';
-import { AuthSingInDto, AuthSingupDto, UserUpdateInfoDto, UserDto } from './models/auth.models';
+import { AuthSingInDto, AuthSingupDto, UserUpdateInfoDto, UserAuthDto } from './models/auth.models';
 import { AccessToken } from './models/jwt.models';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from './decorators/get-user.decorator';
@@ -23,7 +23,7 @@ export class AuthController {
 
   @Get('/login')
   @UseGuards(AuthGuard())
-  login(@GetUser() user: User): Promise<UserDto> {
+  login(@GetUser() user: User): Promise<UserAuthDto> {
     return this.authService.login(user);
   }
 
@@ -33,7 +33,7 @@ export class AuthController {
     @Param('id', ParseIntPipe) userId: number,
     @Body(ValidationPipe) userUpdateInfoDto: UserUpdateInfoDto,
     @GetUser() user: User
-  ): Promise<UserDto> {
+  ): Promise<UserAuthDto> {
     return this.authService.updateUser(userUpdateInfoDto, user, userId);
   }
 

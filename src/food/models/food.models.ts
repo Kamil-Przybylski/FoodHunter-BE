@@ -1,7 +1,7 @@
-import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
 import { RestaurantDto } from './../../restaurant/models/restaurant.models';
-import { IsString, MinLength, MaxLength, IsInt, Max, Min, IsBoolean, IsOptional } from 'class-validator';
+import { IsString, MinLength, MaxLength, IsOptional, IsNumber } from 'class-validator';
 import { Food } from '../entites/food.entity';
+import { UserDto } from 'src/auth/models/auth.models';
 
 export class UnparsedCreateFoodDto {
   @IsString()
@@ -33,8 +33,6 @@ export class UnparsedCreateFoodDto {
   @IsString()
   foodTypeId: string;
 
-
-
   @IsString()
   restaurantId: string;
 
@@ -55,7 +53,6 @@ export class UnparsedCreateFoodDto {
 
   @IsString()
   restaurantTypes: string;
-
 }
 
 export class CreateFoodDto {
@@ -97,7 +94,8 @@ export class CreateFoodDto {
   }
 }
 
-export class FoodDto { // FRONT-END DTO
+export class FoodDto {
+  // FRONT-END DTO
   id: number;
   name: string;
   description: string;
@@ -109,15 +107,15 @@ export class FoodDto { // FRONT-END DTO
 
   createDate: string;
 
-  restaurantId: string;
-  restaurant: RestaurantDto;
   foodTypeId: number;
+  user: UserDto;
+  restaurant: RestaurantDto;
 
   constructor(food: Food) {
     this.id = food.id;
     this.name = food.name;
     this.description = food.description;
-    this.rate = food.rate;
+    this.rate = +food.rate;
     this.isFavorite = food.isFavorite;
     this.isPrivate = food.isPrivate;
     this.isPlanned = food.isPlanned;
@@ -125,8 +123,8 @@ export class FoodDto { // FRONT-END DTO
 
     this.createDate = food.createDate;
 
-    this.restaurantId = food.restaurantId;
     this.foodTypeId = food.foodTypeId;
+    this.user = new UserDto(food.user);
     this.restaurant = new RestaurantDto(food.restaurant);
   }
 }

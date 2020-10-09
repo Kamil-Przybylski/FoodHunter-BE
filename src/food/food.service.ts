@@ -3,10 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FoodRepository } from './entites/food.repository';
 import { User } from 'src/auth/entities/user.entity';
-import {
-  CreateFoodDto,
-  FoodDto,
-} from './models/food.models';
+import { CreateFoodDto, FoodDto } from './models/food.models';
 
 @Injectable()
 export class FoodService {
@@ -15,13 +12,9 @@ export class FoodService {
     private foodRepository: FoodRepository,
   ) {}
 
-  async getFoods(
-    user: User,
-  ): Promise<FoodDto[]> {
+  async getFoods(user: User): Promise<FoodDto[]> {
     const foods = await this.foodRepository.getAll();
-    return foods.map(
-      food => new FoodDto(food),
-    );
+    return foods.map(food => new FoodDto(food));
   }
 
   async createFood(
@@ -29,11 +22,8 @@ export class FoodService {
     createRestaurantDto: CreateRestaurantDto,
     user: User,
   ): Promise<FoodDto> {
-    const food = await this.foodRepository.createOneWithRestaurant(
-      createFoodDto,
-      createRestaurantDto,
-      user,
-    );
+    const food = await this.foodRepository.createSingle(createFoodDto, createRestaurantDto, user);
+    console.log();
     return new FoodDto(food);
   }
 }

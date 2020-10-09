@@ -1,6 +1,6 @@
 {
   "singleQuote": true,
   "trailingComma": "all",
-  "printWidth": 40,
+  "printWidth": 120,
   "eslintIntegration": true
 }

@@ -56,7 +56,7 @@ export class CreateRestaurantDto {
 export class RestaurantDto { // FRONT-END DTO
   id: string;
   name: string;
-  formatted_address: string;
+  formattedAddress: string;
   rating: number;
   url: string;
   website: string;
@@ -65,7 +65,7 @@ export class RestaurantDto { // FRONT-END DTO
   constructor(restaurant: Restaurant) {
     this.id = restaurant.id;
     this.name = restaurant.name;
-    this.formatted_address = restaurant.formatted_address;
+    this.formattedAddress = restaurant.formatted_address;
     this.rating = +restaurant.rating;
     this.url = restaurant.url;
     this.website = restaurant.website;

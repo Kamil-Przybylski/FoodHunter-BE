@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserRepository } from 'src/auth/entities/user.repository';
-import { AuthSingInDto, AuthSingupDto, UserUpdateInfoDto, UserDto } from './models/auth.models';
+import { AuthSingInDto, AuthSingupDto, UserUpdateInfoDto, UserAuthDto } from './models/auth.models';
 import { JwtService } from '@nestjs/jwt';
 import { AccessToken, JwtPayload } from './models/jwt.models';
 import { User } from './entities/user.entity';
@@ -27,21 +27,21 @@ export class AuthService {
     const payload: JwtPayload = { username: user.username };
     const accessToken = await this.jwtService.sign(payload);
 
-    return { accessToken, user: new UserDto(user) };
+    return { accessToken, user: new UserAuthDto(user) };
   }
 
-  async login(user: User): Promise<UserDto> {
-    return new UserDto(user);
+  async login(user: User): Promise<UserAuthDto> {
+    return new UserAuthDto(user);
   }
 
-  async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User, userId: number): Promise<UserDto> {
+  async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User, userId: number): Promise<UserAuthDto> {
     if (userId !== userUpdateInfoDto.id) throw new NotFoundException('userId from path is not equal to userId from DTO');
     
     const updatedUser = await this.userRepository.updateUser(userUpdateInfoDto, user);
-    return new UserDto(updatedUser);
+    return new UserAuthDto(updatedUser);
   }
 
-  async getAll() {
+  async getAll(): Promise<User[]> {
     return await this.userRepository.getAll();
   }
 

@@ -3,7 +3,6 @@ import {
   Get,
   Post,
   Body,
-  UsePipes,
   ValidationPipe,
   UseGuards,
   UseInterceptors,
@@ -11,11 +10,7 @@ import {
 } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { FoodService } from './food.service';
-import {
-  FoodDto,
-  CreateFoodDto,
-  UnparsedCreateFoodDto,
-} from './models/food.models';
+import { FoodDto, CreateFoodDto, UnparsedCreateFoodDto } from './models/food.models';
 import { User } from 'src/auth/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -26,17 +21,11 @@ import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
 @Controller('food')
 @UseGuards(AuthGuard())
 export class FoodController {
-  constructor(
-    private readonly foodService: FoodService,
-  ) {}
+  constructor(private readonly foodService: FoodService) {}
 
   @Get()
-  getFoods(
-    @GetUser() user: User,
-  ): Promise<FoodDto[]> {
-    return this.foodService.getFoods(
-      user,
-    );
+  getFoods(@GetUser() user: User): Promise<FoodDto[]> {
+    return this.foodService.getFoods(user);
   }
 
   @Post()
@@ -47,7 +36,7 @@ export class FoodController {
         filename: editFileName,
       }),
       fileFilter: imageFileFilter,
-    })
+    }),
   )
   createFood(
     @Body(ValidationPipe)
@@ -61,5 +50,4 @@ export class FoodController {
       user,
     );
   }
-
 }
