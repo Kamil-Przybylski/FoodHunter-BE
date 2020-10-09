@@ -4,6 +4,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { FoodRepository } from './entites/food.repository';
 import { User } from 'src/auth/entities/user.entity';
 import { CreateFoodDto, FoodDto } from './models/food.models';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate/dist/interfaces';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { Food } from './entites/food.entity';
 
 @Injectable()
 export class FoodService {
@@ -12,9 +15,13 @@ export class FoodService {
     private foodRepository: FoodRepository,
   ) {}
 
-  async getFoods(user: User): Promise<FoodDto[]> {
-    const foods = await this.foodRepository.getAll();
-    return foods.map(food => new FoodDto(food));
+  async getFoods(options: IPaginationOptions, user: User): Promise<Pagination<FoodDto>> {
+    const foodsPagination: Pagination<Food> = await this.foodRepository.getAll(options, user);
+    return {
+      items: foodsPagination.items.map(item => new FoodDto(item)),
+      links: foodsPagination.links,
+      meta: foodsPagination.meta,
+    } as Pagination<FoodDto>;
   }
 
   async createFood(

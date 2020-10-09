@@ -8,7 +8,7 @@ export class Restaurant extends BaseEntity {
   @PrimaryColumn({ type: 'varchar', unique: true })
   id: string;
 
-  @Column({ type: 'varchar', length: 30 })
+  @Column({ type: 'varchar', length: 30 }) // TEMP ZA MAŁO !!!
   name: string;
 
   @Column({ type: 'varchar', length: 255 })

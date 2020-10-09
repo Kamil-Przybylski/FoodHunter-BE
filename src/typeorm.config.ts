@@ -14,3 +14,8 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   entities: [join(__dirname, '**', '*.entity.{js,ts}')],
   synchronize: process.env.TYPEORM_SYNC || dbConfig.synchronize
 };
+
+export enum TypeOrmEnum {
+  ASC = 'ASC',
+  DESC = 'DESC'
+}

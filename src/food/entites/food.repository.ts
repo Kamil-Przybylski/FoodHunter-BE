@@ -7,17 +7,22 @@ import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
 import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
 import * as fs from 'fs';
 import * as path from 'path';
+import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { TypeOrmEnum } from 'src/typeorm.config';
 
 @EntityRepository(Food)
 export class FoodRepository extends Repository<Food> {
-  async getAll() {
+  async getAll(options: IPaginationOptions, user: User): Promise<Pagination<Food>> {
     const query = this.createQueryBuilder('food');
     query.leftJoinAndSelect('food.user', 'user');
     query.leftJoinAndSelect('food.restaurant', 'restaurant');
     query.leftJoinAndSelect('food.foodType', 'foodType');
     query.leftJoinAndSelect('food.comments', 'comments');
     query.leftJoinAndSelect('food.tagFoodRelations', 'tagFoodRelations');
-    return await query.getMany();
+    query.orderBy('food.createDate', TypeOrmEnum.DESC);
+
+    return paginate<Food>(query, options);
+    // return await query.getMany();
   }
 
   // async createSingle(createFoodDto: CreateFoodDto, user: User): Promise<Food> {
