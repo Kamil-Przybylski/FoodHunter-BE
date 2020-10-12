@@ -33,7 +33,7 @@ export class CatalogsService {
 
   async getFoodForCatalog(catalogId: number, user: User): Promise<FoodDto[]> {
     const catalogFoodRelation = await this.catalogFoodRelationRepository.getAllForCatalog(catalogId);
-    return catalogFoodRelation.map(item => new FoodDto(item.food))
+    return catalogFoodRelation.map(item => new FoodDto(item.food, user))
   }
 
   async addFoodToCatalog(addFoodToCatalogDto: AddFoodToCatalogDto, catalogId: number, user: User): Promise<CatalogFoodRelation> {

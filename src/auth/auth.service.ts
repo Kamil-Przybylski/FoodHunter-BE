@@ -34,8 +34,8 @@ export class AuthService {
     return new UserAuthDto(user);
   }
 
-  async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User, userId: number): Promise<UserAuthDto> {
-    if (userId !== userUpdateInfoDto.id) throw new NotFoundException('userId from path is not equal to userId from DTO');
+  async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User): Promise<UserAuthDto> {
+    if (user.id !== userUpdateInfoDto.id) throw new NotFoundException('userId from path is not equal to userId from DTO');
     
     const updatedUser = await this.userRepository.updateUser(userUpdateInfoDto, user);
     return new UserAuthDto(updatedUser);

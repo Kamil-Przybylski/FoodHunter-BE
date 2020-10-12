@@ -11,10 +11,15 @@ export class CommentsService {
     @InjectRepository(CommentsRepository)
     private commentsRepository: CommentsRepository
   ) { }
+
+  async getCommentsByFoodId(foodId: number, user: User): Promise<CommentDto[]> {
+    const comments = await this.commentsRepository.getByFoodId(foodId, user);
+    return comments.map(comment => new CommentDto(comment));
+  }
   
-  async createComment(createCommentDto: CreateCommentDto, user: User): Promise<CommentDto> {
-    const comment = await this.commentsRepository.createOne(createCommentDto, user);
-    return new CommentDto(comment);
+  async createComment(createCommentDto: CreateCommentDto, user: User): Promise<CommentDto[]> {
+    const comments = await this.commentsRepository.createOne(createCommentDto, user);
+    return comments.map(comment => new CommentDto(comment));
   }
 
 }

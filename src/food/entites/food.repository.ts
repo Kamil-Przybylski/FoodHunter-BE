@@ -12,54 +12,17 @@ import { TypeOrmEnum } from 'src/typeorm.config';
 
 @EntityRepository(Food)
 export class FoodRepository extends Repository<Food> {
+
   async getAll(options: IPaginationOptions, user: User): Promise<Pagination<Food>> {
     const query = this.createQueryBuilder('food');
     query.leftJoinAndSelect('food.user', 'user');
     query.leftJoinAndSelect('food.restaurant', 'restaurant');
-    query.leftJoinAndSelect('food.foodType', 'foodType');
-    query.leftJoinAndSelect('food.comments', 'comments');
     query.leftJoinAndSelect('food.tagFoodRelations', 'tagFoodRelations');
+    query.leftJoin('food.comments', 'comments').addSelect(['comments.id', 'comments.userId']);
+    
     query.orderBy('food.createDate', TypeOrmEnum.DESC);
-
-    return paginate<Food>(query, options);
-    // return await query.getMany();
+    return await paginate<Food>(query, options);
   }
-
-  // async createSingle(createFoodDto: CreateFoodDto, user: User): Promise<Food> {
-  //   const {
-  //     name,
-  //     description,
-  //     rate,
-  //     isFavorite,
-  //     isPlanned,
-  //     isPrivate,
-  //     photoPath,
-  //     restaurantId,
-  //     foodTypeId,
-  //   } = createFoodDto;
-
-  //   const food = new Food();
-  //   food.name = name;
-  //   food.description = description;
-  //   food.rate = rate;
-  //   food.isFavorite = isFavorite;
-  //   food.isPlanned = isPlanned;
-  //   food.isPrivate = isPrivate;
-  //   food.photoPath = photoPath;
-  //   food.createDate = new Date().toISOString();
-
-  //   food.userId = user.id;
-  //   food.restaurantId = restaurantId;
-  //   food.foodTypeId = foodTypeId;
-
-  //   try {
-  //     await food.save();
-  //   } catch (error) {
-  //     throw new InternalServerErrorException(error.message);
-  //   }
-
-  //   return food;
-  // }
 
   async createSingle(
     createFoodDto: CreateFoodDto,
@@ -94,7 +57,6 @@ export class FoodRepository extends Repository<Food> {
     try {
       await restaurant.save();
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
     try {

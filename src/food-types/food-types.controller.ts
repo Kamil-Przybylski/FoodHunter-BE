@@ -4,8 +4,9 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
 import { CreateFoodTypeDto, FoodTypeDto } from './models/food-type.models';
 import { AuthGuard } from '@nestjs/passport';
+import { UrlPathsEnum } from 'src/app.config';
 
-@Controller('food-types')
+@Controller(UrlPathsEnum.FOOD_TYPES)
 @UseGuards(AuthGuard())
 export class FoodTypesController {
 

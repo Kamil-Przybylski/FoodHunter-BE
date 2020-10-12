@@ -3,16 +3,26 @@ import { Comments } from './comment.entity';
 import { CreateCommentDto } from '../models/comment.models';
 import { User } from 'src/auth/entities/user.entity';
 import { InternalServerErrorException } from '@nestjs/common';
+import { TypeOrmEnum } from 'src/typeorm.config';
 
 @EntityRepository(Comments)
 export class CommentsRepository extends Repository<Comments> {
 
-  async getAll() {
+  async getAll(): Promise<Comments[]> {
     const query = this.createQueryBuilder('comments');
     return await query.getMany();
   }
 
-  async createOne(createCommentDto: CreateCommentDto, user: User): Promise<Comments> {
+  async getByFoodId(foodId: number, user: User): Promise<Comments[]> {
+    const query = this.createQueryBuilder('comments');
+    query.where('comments.foodId = :foodId', { foodId });
+    query.leftJoinAndSelect('comments.user', 'user');
+    
+    query.orderBy('comments.createDate', TypeOrmEnum.DESC);
+    return await query.getMany();
+  }
+
+  async createOne(createCommentDto: CreateCommentDto, user: User): Promise<Comments[]> {
     const { 
       comment,
       foodId
@@ -22,6 +32,7 @@ export class CommentsRepository extends Repository<Comments> {
     comments.comment = comment;
     comments.foodId = foodId;
     comments.userId = user.id;
+    comments.user = user;
     comments.createDate = (new Date()).toISOString();
 
     try {
@@ -30,6 +41,6 @@ export class CommentsRepository extends Repository<Comments> {
       throw new InternalServerErrorException(error.message);
     }
 
-    return comments;
+    return await this.getByFoodId(foodId, user);
   }
 }

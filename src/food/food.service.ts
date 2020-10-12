@@ -18,7 +18,7 @@ export class FoodService {
   async getFoods(options: IPaginationOptions, user: User): Promise<Pagination<FoodDto>> {
     const foodsPagination: Pagination<Food> = await this.foodRepository.getAll(options, user);
     return {
-      items: foodsPagination.items.map(item => new FoodDto(item)),
+      items: foodsPagination.items.map(item => new FoodDto(item, user)),
       links: foodsPagination.links,
       meta: foodsPagination.meta,
     } as Pagination<FoodDto>;
@@ -30,7 +30,6 @@ export class FoodService {
     user: User,
   ): Promise<FoodDto> {
     const food = await this.foodRepository.createSingle(createFoodDto, createRestaurantDto, user);
-    console.log();
-    return new FoodDto(food);
+    return new FoodDto(food, user);
   }
 }

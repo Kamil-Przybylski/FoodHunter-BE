@@ -37,7 +37,6 @@ export class UserRepository extends Repository<User> {
   }
  
   async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User): Promise<User> {
-    if (userUpdateInfoDto.username) user.username = userUpdateInfoDto.username; 
     if (userUpdateInfoDto.birthDate) user.birthDate = userUpdateInfoDto.birthDate; 
     if (userUpdateInfoDto.photoPath) user.photoPath = userUpdateInfoDto.photoPath; 
     if (userUpdateInfoDto.about) user.about = userUpdateInfoDto.about; 

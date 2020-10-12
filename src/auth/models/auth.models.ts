@@ -1,4 +1,5 @@
 import { IsString, MinLength, MaxLength, Matches, IsEmail, IsOptional, IsDate, IsNumber, IsDateString } from "class-validator";
+import { FileUtil } from "src/utils";
 import { User } from "../entities/user.entity";
 
 export class AuthSingupDto {
@@ -35,31 +36,37 @@ export class AuthSingInDto {
   password: string;
 }
 
-
-
-export class UserUpdateInfoDto {
-  @IsNumber()
-  id: number;
-
-  @IsOptional()
+export class UnparsedUserUpdateInfoDto {
   @IsString()
-  @MinLength(3)
-  @MaxLength(30)
-  username: string;
-
   @IsOptional()
-  @IsDateString()
+  id: string;
+
+  @IsString()
+  @IsOptional()
   birthDate: string;
-
-  @IsOptional()
-  @IsString()
-  photoPath: string;
 
   @IsOptional()
   @IsString()
   @MinLength(1)
   @MaxLength(255)
   about: string;
+
+  @IsOptional()
+  photo: any;
+}
+
+export class UserUpdateInfoDto {
+  id: number;
+  birthDate: string;
+  photoPath: string;
+  about: string;
+
+  constructor(updateInfoDto: UnparsedUserUpdateInfoDto, photoPath: string, dest: string) {
+    this.id = +updateInfoDto.id;
+    this.birthDate = updateInfoDto.birthDate;
+    this.photoPath = FileUtil.createPhotoPath(photoPath, dest);
+    this.about = updateInfoDto.about;
+  }
 }
 
 export class UserAuthDto { // FRONT-END DTO
@@ -75,7 +82,7 @@ export class UserAuthDto { // FRONT-END DTO
     this.username = user.username; 
     this.email = user.email;
     this.birthDate = user.birthDate;
-    this.photoPath = user.photoPath;
+    this.photoPath = FileUtil.returnDefaultAvatar(user.photoPath);;
     this.about = user.about;
   }
 }
@@ -88,6 +95,6 @@ export class UserDto { // FRONT-END DTO
   constructor(user: User) {
     this.id = user.id;
     this.username = user.username; 
-    this.photoPath = user.photoPath;
+    this.photoPath = FileUtil.returnDefaultAvatar(user.photoPath);
   }
 }

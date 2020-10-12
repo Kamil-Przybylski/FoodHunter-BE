@@ -7,9 +7,9 @@ import { User } from 'src/auth/entities/user.entity';
 import { CreateCatalogDto, CatalogDto } from './models/catalogs.models';
 import { AddFoodToCatalogDto } from './models/catalog-food-relation.models';
 import { CatalogFoodRelation } from './entities/catalog-food-relation.entity';
-import { Food } from 'src/food/entites/food.entity';
+import { UrlPathsEnum } from 'src/app.config';
 
-@Controller('catalogs')
+@Controller(`${UrlPathsEnum.CATALOGS}`)
 @UseGuards(AuthGuard())
 export class CatalogsController {
 
@@ -22,10 +22,10 @@ export class CatalogsController {
     return this.catalogsService.getCatalogs(user);
   }
 
-  @Get(':id')
+  @Get(`:${UrlPathsEnum.ID}`)
   getFoodForCatalog(
     @GetUser() user: User,
-    @Param('id', ParseIntPipe) catalogId: number 
+    @Param(UrlPathsEnum.ID, ParseIntPipe) catalogId: number 
   ): Promise<FoodDto[]> {
     return this.catalogsService.getFoodForCatalog(catalogId, user);
   }
@@ -39,12 +39,12 @@ export class CatalogsController {
     return this.catalogsService.createCatalog(createCatalogDto, user);
   }
 
-  @Post(':id/add-food')
+  @Post(`:${UrlPathsEnum.ID}/${UrlPathsEnum.ADD_FOOD}`)
   @UseGuards(AuthGuard())
   addFoodToCatalog(
     @Body(ValidationPipe) addFoodToCatalogDto: AddFoodToCatalogDto,
     @GetUser() user: User,
-    @Param('id', ParseIntPipe) catalogId: number 
+    @Param(UrlPathsEnum.ID, ParseIntPipe) catalogId: number 
   ): Promise<CatalogFoodRelation> {
     return this.catalogsService.addFoodToCatalog(addFoodToCatalogDto, catalogId, user);
   }

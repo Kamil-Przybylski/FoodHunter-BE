@@ -4,8 +4,9 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
 import { RestaurantService } from './restaurant.service';
 import { CreateSingleRestaurantDto, RestaurantDto } from './models/restaurant.models';
+import { UrlPathsEnum } from 'src/app.config';
 
-@Controller('restaurant')
+@Controller(UrlPathsEnum.RESTAURANT)
 @UseGuards(AuthGuard())
 export class RestaurantController {
 

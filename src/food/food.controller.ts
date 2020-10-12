@@ -16,29 +16,30 @@ import { User } from 'src/auth/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { imageFileFilter, editFileName } from 'src/file.utils';
 import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
 import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
+import { FileUtil } from 'src/utils';
+import { FilePathsEnum, paginatorOptions, UrlPathsEnum } from 'src/app.config';
 
-@Controller('food')
+@Controller(UrlPathsEnum.FOOD)
 @UseGuards(AuthGuard())
 export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
   @Get()
-  getFoods(@Query('page') page: number = 1, @GetUser() user: User): Promise<Pagination<FoodDto>> {
-    const paginationOptions: IPaginationOptions = {page: +page, limit: 2};
+  getFoods(@Query(paginatorOptions.PAGE) page: number = 1, @GetUser() user: User): Promise<Pagination<FoodDto>> {
+    const paginationOptions: IPaginationOptions = { page: +page, limit: paginatorOptions.food.limits };
     return this.foodService.getFoods(paginationOptions, user);
   }
 
   @Post()
   @UseInterceptors(
-    FileInterceptor('photo', {
+    FileInterceptor(FilePathsEnum.PHOTO, {
       storage: diskStorage({
-        destination: './uploads/foods',
-        filename: editFileName,
+        destination: `./${FilePathsEnum.FOOD_PATH}`,
+        filename: FileUtil.editFileName,
       }),
-      fileFilter: imageFileFilter,
+      fileFilter: FileUtil.imageFileFilter,
     }),
   )
   createFood(
@@ -48,7 +49,7 @@ export class FoodController {
     @GetUser() user: User,
   ): Promise<FoodDto> {
     return this.foodService.createFood(
-      new CreateFoodDto(createFoodDto, photo.filename, 'uploads/foods'),
+      new CreateFoodDto(createFoodDto, photo.filename, `${FilePathsEnum.FOOD_PATH}`),
       new CreateRestaurantDto(createFoodDto),
       user,
     );

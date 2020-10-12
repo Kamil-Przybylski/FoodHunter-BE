@@ -1,7 +1,10 @@
 import { RestaurantDto } from './../../restaurant/models/restaurant.models';
-import { IsString, MinLength, MaxLength, IsOptional, IsNumber } from 'class-validator';
+import { IsString, MinLength, MaxLength, IsOptional } from 'class-validator';
 import { Food } from '../entites/food.entity';
 import { UserDto } from 'src/auth/models/auth.models';
+import { ShortCommentDto } from 'src/comments/models/comment.models';
+import { User } from 'src/auth/entities/user.entity';
+import { FileUtil } from 'src/utils';
 
 export class UnparsedCreateFoodDto {
   @IsString()
@@ -73,7 +76,7 @@ export class CreateFoodDto {
     this.isFavorite = this.getBoolean(formData.isFavorite);
     this.isPrivate = this.getBoolean(formData.isPrivate);
     this.isPlanned = this.getBoolean(formData.isPlanned);
-    this.photoPath = this.createPhotoPath(photoPath, dest);
+    this.photoPath = FileUtil.createPhotoPath(photoPath, dest);
     this.restaurantId = formData.restaurantId;
     this.foodTypeId = +formData.foodTypeId;
   }
@@ -88,14 +91,10 @@ export class CreateFoodDto {
     if (booleanString === 'true') return true;
     return false;
   }
-
-  createPhotoPath(photoPath: string, dest: string) {
-    return `${dest}/${photoPath}`;
-  }
 }
 
+// FRONT-END DTO
 export class FoodDto {
-  // FRONT-END DTO
   id: number;
   name: string;
   description: string;
@@ -104,14 +103,14 @@ export class FoodDto {
   isPrivate: boolean;
   isPlanned: boolean;
   photoPath: string;
-
+  foodTypeId: number;
   createDate: string;
 
-  foodTypeId: number;
   user: UserDto;
   restaurant: RestaurantDto;
+  shortComment: ShortCommentDto;
 
-  constructor(food: Food) {
+  constructor(food: Food, user: User) {
     this.id = food.id;
     this.name = food.name;
     this.description = food.description;
@@ -120,11 +119,11 @@ export class FoodDto {
     this.isPrivate = food.isPrivate;
     this.isPlanned = food.isPlanned;
     this.photoPath = food.photoPath;
-
+    this.foodTypeId = food.foodTypeId;
     this.createDate = food.createDate;
 
-    this.foodTypeId = food.foodTypeId;
     this.user = new UserDto(food.user);
     this.restaurant = new RestaurantDto(food.restaurant);
+    this.shortComment = new ShortCommentDto(food.comments, user.id );
   }
 }

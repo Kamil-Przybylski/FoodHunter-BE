@@ -8,6 +8,7 @@ import { TagFoodRelation } from 'src/tags/entities/tag-food-relation.entity';
 
 @Entity()
 export class Food extends BaseEntity {
+
   @PrimaryGeneratedColumn()
   id: number;
 
@@ -62,5 +63,5 @@ export class Food extends BaseEntity {
 
   @OneToMany(type => TagFoodRelation, tagFoodRelation => tagFoodRelation.food, { eager: true })
   tagFoodRelations: TagFoodRelation[];
-
+  
 }
