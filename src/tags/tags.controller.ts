@@ -5,7 +5,6 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { User } from 'src/auth/entities/user.entity';
 import { TagDto, AddFoodToTagDto } from './models/tag.models';
 import { CreateTagDto } from './models/tag.models';
-import { TagFoodRelation } from './entities/tag-food-relation.entity';
 import { UrlPathsEnum } from 'src/app.config';
 
 @Controller(UrlPathsEnum.TAGS)
@@ -30,13 +29,13 @@ export class TagsController {
     return this.tagsService.createTag(createTagDto, user);
   }
 
-  @Post(`/${UrlPathsEnum.ADD_FOOD}`)
-  @UseGuards(AuthGuard())
-  addFoodToCatalog(
-    @Body(ValidationPipe) addFoodToTagDto: AddFoodToTagDto,
-    @GetUser() user: User,
-  ): Promise<TagFoodRelation> {
-    return this.tagsService.addFoodToTag(addFoodToTagDto, user);
-  }
+  // @Post(`/${UrlPathsEnum.ADD_FOOD}`)
+  // @UseGuards(AuthGuard())
+  // addFoodToCatalog(
+  //   @Body(ValidationPipe) addFoodToTagDto: AddFoodToTagDto,
+  //   @GetUser() user: User,
+  // ): Promise<TagFoodRelation> {
+  //   return this.tagsService.addFoodToTag(addFoodToTagDto, user);
+  // }
 
 }

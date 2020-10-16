@@ -4,22 +4,22 @@ import { FilePathsEnum } from "./app.config";
 @Controller()
 export class AppController {
 
-  @Get(`${FilePathsEnum.FOOD_PATH}/:${FilePathsEnum.IMGPATH}`)
+  @Get(`${FilePathsEnum.FOOD_PATH}/:${FilePathsEnum.IMG_NAME}`)
   // @UseGuards(AuthGuard())
-  seeUploadedFoodFile(@Param(FilePathsEnum.IMGPATH) photo: string, @Res() res: any) {
-    return res.sendFile(photo, { root: `./${FilePathsEnum.FOOD_PATH}` });
+  seeUploadedFoodFile(@Param(FilePathsEnum.IMG_NAME) photoName: string, @Res() res: any) {
+    return res.sendFile(photoName, { root: `./${FilePathsEnum.FOOD_PATH}` });
   }
 
-  @Get(`${FilePathsEnum.AVATARS_PATH}/:${FilePathsEnum.IMGPATH}`)
+  @Get(`${FilePathsEnum.AVATARS_PATH}/:${FilePathsEnum.IMG_NAME}`)
   // @UseGuards(AuthGuard())
-  seeUploadedAvatarFile(@Param(FilePathsEnum.IMGPATH) photo: string, @Res() res: any) {
-    return res.sendFile(photo, { root: `./${FilePathsEnum.AVATARS_PATH}` });
+  seeUploadedAvatarFile(@Param(FilePathsEnum.IMG_NAME) photoName: string, @Res() res: any) {
+    return res.sendFile(photoName, { root: `./${FilePathsEnum.AVATARS_PATH}` });
   }
 
-  @Get(`${FilePathsEnum.DEFAULT_PATH}/:${FilePathsEnum.IMGPATH}`)
+  @Get(`${FilePathsEnum.DEFAULT_PATH}/:${FilePathsEnum.IMG_NAME}`)
   // @UseGuards(AuthGuard())
-  seeDefaultFile(@Param(FilePathsEnum.IMGPATH) photo: string, @Res() res: any) {
-    return res.sendFile(photo, { root: `./${FilePathsEnum.DEFAULT_PATH}` });
+  seeDefaultFile(@Param(FilePathsEnum.IMG_NAME) photoName: string, @Res() res: any) {
+    return res.sendFile(photoName, { root: `./${FilePathsEnum.DEFAULT_PATH}` });
   }
   
 }

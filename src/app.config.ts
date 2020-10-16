@@ -1,5 +1,5 @@
 export enum FilePathsEnum {
-  IMGPATH = 'imgpath',
+  IMG_NAME = 'imgName',
   PHOTO = 'photo',
 
   DEFAULT_AVATAR = 'avatar.jpg',
@@ -19,12 +19,12 @@ export enum UrlPathsEnum {
   COMMENTS = 'comments',
   CATALOGS = 'catalogs',
   TAGS = 'tags',
+  USER = 'user',
 
   AUTH = 'auth',
   SINGUP = 'singup',
   SINGIN = 'singin',
   LOGIN = 'login',
-  USER = 'user',
 }
 
 export const paginatorOptions = {

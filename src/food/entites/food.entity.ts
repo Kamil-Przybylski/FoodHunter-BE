@@ -1,10 +1,10 @@
 import { Restaurant } from './../../restaurant/entities/restaurant.entity';
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import { User } from 'src/auth/entities/user.entity';
 import { FoodType } from 'src/food-types/entities/food-type.entity';
-import { CatalogFoodRelation } from 'src/catalogs/entities/catalog-food-relation.entity';
 import { Comments } from 'src/comments/entities/comment.entity';
-import { TagFoodRelation } from 'src/tags/entities/tag-food-relation.entity';
+import { Tag } from 'src/tags/entities/tag.entity';
+import { Catalog } from 'src/catalogs/entities/catalog.entity';
 
 @Entity()
 export class Food extends BaseEntity {
@@ -58,10 +58,12 @@ export class Food extends BaseEntity {
   @OneToMany(type => Comments, comment => comment.food, { eager: true })
   comments: Comments[];
   
-  @OneToMany(type => CatalogFoodRelation, catalog => catalog.food, { eager: true })
-  catalogFoodRelations: CatalogFoodRelation[];
+  @ManyToMany(type => Catalog, catalog => catalog.foods)
+  @JoinTable()
+  catalogs: Catalog[];
 
-  @OneToMany(type => TagFoodRelation, tagFoodRelation => tagFoodRelation.food, { eager: true })
-  tagFoodRelations: TagFoodRelation[];
+  @ManyToMany(type => Tag, tag => tag.foods)
+  @JoinTable()
+  tags: Tag[];
   
 }

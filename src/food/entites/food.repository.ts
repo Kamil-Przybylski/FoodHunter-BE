@@ -17,7 +17,6 @@ export class FoodRepository extends Repository<Food> {
     const query = this.createQueryBuilder('food');
     query.leftJoinAndSelect('food.user', 'user');
     query.leftJoinAndSelect('food.restaurant', 'restaurant');
-    query.leftJoinAndSelect('food.tagFoodRelations', 'tagFoodRelations');
     query.leftJoin('food.comments', 'comments').addSelect(['comments.id', 'comments.userId']);
     
     query.orderBy('food.createDate', TypeOrmEnum.DESC);

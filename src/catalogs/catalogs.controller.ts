@@ -5,8 +5,6 @@ import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from 'src/auth/entities/user.entity';
 import { CreateCatalogDto, CatalogDto } from './models/catalogs.models';
-import { AddFoodToCatalogDto } from './models/catalog-food-relation.models';
-import { CatalogFoodRelation } from './entities/catalog-food-relation.entity';
 import { UrlPathsEnum } from 'src/app.config';
 
 @Controller(`${UrlPathsEnum.CATALOGS}`)
@@ -22,14 +20,6 @@ export class CatalogsController {
     return this.catalogsService.getCatalogs(user);
   }
 
-  @Get(`:${UrlPathsEnum.ID}`)
-  getFoodForCatalog(
-    @GetUser() user: User,
-    @Param(UrlPathsEnum.ID, ParseIntPipe) catalogId: number 
-  ): Promise<FoodDto[]> {
-    return this.catalogsService.getFoodForCatalog(catalogId, user);
-  }
-
   @Post()
   @UseGuards(AuthGuard())
   createCatalog(
@@ -39,14 +29,22 @@ export class CatalogsController {
     return this.catalogsService.createCatalog(createCatalogDto, user);
   }
 
-  @Post(`:${UrlPathsEnum.ID}/${UrlPathsEnum.ADD_FOOD}`)
-  @UseGuards(AuthGuard())
-  addFoodToCatalog(
-    @Body(ValidationPipe) addFoodToCatalogDto: AddFoodToCatalogDto,
-    @GetUser() user: User,
-    @Param(UrlPathsEnum.ID, ParseIntPipe) catalogId: number 
-  ): Promise<CatalogFoodRelation> {
-    return this.catalogsService.addFoodToCatalog(addFoodToCatalogDto, catalogId, user);
-  }
+  // @Get(`:${UrlPathsEnum.ID}`)
+  // getFoodForCatalog(
+  //   @GetUser() user: User,
+  //   @Param(UrlPathsEnum.ID, ParseIntPipe) catalogId: number 
+  // ): Promise<FoodDto[]> {
+  //   return this.catalogsService.getFoodForCatalog(catalogId, user);
+  // }
+
+  // @Post(`:${UrlPathsEnum.ID}/${UrlPathsEnum.ADD_FOOD}`)
+  // @UseGuards(AuthGuard())
+  // addFoodToCatalog(
+  //   @Body(ValidationPipe) addFoodToCatalogDto: AddFoodToCatalogDto,
+  //   @GetUser() user: User,
+  //   @Param(UrlPathsEnum.ID, ParseIntPipe) catalogId: number 
+  // ): Promise<CatalogFoodRelation> {
+  //   return this.catalogsService.addFoodToCatalog(addFoodToCatalogDto, catalogId, user);
+  // }
 
 }

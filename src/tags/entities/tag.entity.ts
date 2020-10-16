@@ -1,5 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { TagFoodRelation } from './tag-food-relation.entity';
+import { Food } from 'src/food/entites/food.entity';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
 
 @Entity()
 export class Tag extends BaseEntity {
@@ -13,6 +13,6 @@ export class Tag extends BaseEntity {
   description: string;
 
 
-  @OneToMany(type => TagFoodRelation, tagFoodRelation => tagFoodRelation.tag, { eager: true })
-  tagFoodRelations: TagFoodRelation[];
+  @ManyToMany(type => Food, food => food.tags)
+  foods: Food[];
 }

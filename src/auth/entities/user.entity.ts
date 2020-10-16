@@ -1,5 +1,5 @@
 import { Comments } from './../../comments/entities/comment.entity';
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Food } from 'src/food/entites/food.entity';
 import { Catalog } from 'src/catalogs/entities/catalog.entity';
@@ -42,6 +42,14 @@ export class User extends BaseEntity {
 
   @OneToMany(type => Comments, comments => comments.user, { eager: true })
   comments: Comments[];
+
+
+  @ManyToMany(type => User, user => user.following)
+  @JoinTable()
+  followers: User[];
+
+  @ManyToMany(type => User, user => user.followers)
+  following: User[];
 
 
   async validatePassword(password: string): Promise<boolean> {

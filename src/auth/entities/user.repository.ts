@@ -7,6 +7,8 @@ import { ConflictException, InternalServerErrorException } from '@nestjs/common'
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
 
+  // AUTH
+
   async singUp(authSingupDto: AuthSingupDto): Promise<void> {
     const { username, email, password } = authSingupDto;
 
@@ -35,6 +37,12 @@ export class UserRepository extends Repository<User> {
     if (user && await user.validatePassword(password)) return user;
     else return null; 
   }
+
+  async getAuthUser(username: string): Promise<User> {
+    return await this.findOne({ username }, {loadEagerRelations: false});
+  }
+
+  // USER
  
   async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User): Promise<User> {
     if (userUpdateInfoDto.birthDate) user.birthDate = userUpdateInfoDto.birthDate; 
