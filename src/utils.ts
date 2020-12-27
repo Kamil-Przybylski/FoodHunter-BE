@@ -1,6 +1,7 @@
 import { extname } from 'path';
 import * as moment from 'moment';
-import { FilePathsEnum } from './app.config';
+import { FilePathsEnum, PAGINATOR_OPTIONS } from './app.config';
+import { IPaginationOptions } from 'nestjs-typeorm-paginate';
 
 export class FileUtil {
   private static removeNotAllowedCharacters(name: string): string {
@@ -36,5 +37,16 @@ export class FileUtil {
   public static returnDefaultAvatar(photoPath: string): string {
     if (photoPath) return photoPath;
     else return this.createPhotoPath(FilePathsEnum.DEFAULT_AVATAR, FilePathsEnum.DEFAULT_PATH);
+  }
+}
+
+export class PaginatorUtil {
+  public static getPageOptions(page: string): IPaginationOptions {
+    return { page: +page || 1, limit: PAGINATOR_OPTIONS.food.limits };
+  }
+
+  public static getPageOptionsForInfiniteScroll(page: string): IPaginationOptions {
+    const limit = (+page || 1) * PAGINATOR_OPTIONS.food.limits;
+    return {page: 1, limit: limit };
   }
 }

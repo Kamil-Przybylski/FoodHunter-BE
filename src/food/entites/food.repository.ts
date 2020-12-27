@@ -13,12 +13,34 @@ import { TypeOrmEnum } from 'src/typeorm.config';
 @EntityRepository(Food)
 export class FoodRepository extends Repository<Food> {
 
-  async getAll(options: IPaginationOptions, user: User): Promise<Pagination<Food>> {
+  async getFoods(options: IPaginationOptions, user: User): Promise<Pagination<Food>> {
     const query = this.createQueryBuilder('food');
+    query.where('food.userId IN (:...ids)', { ids: [...user.followerIds, user.id] });
     query.leftJoinAndSelect('food.user', 'user');
     query.leftJoinAndSelect('food.restaurant', 'restaurant');
     query.leftJoin('food.comments', 'comments').addSelect(['comments.id', 'comments.userId']);
-    
+
+    query.orderBy('food.createDate', TypeOrmEnum.DESC);
+    return await paginate<Food>(query, options);
+  }
+
+  async getFood(foodId: number): Promise<Food> {
+    const query = this.createQueryBuilder('food');
+    query.where('food.id = :id', { id: foodId });
+    query.leftJoinAndSelect('food.user', 'user');
+    query.leftJoinAndSelect('food.restaurant', 'restaurant');
+    query.leftJoin('food.comments', 'comments').addSelect(['comments.id', 'comments.userId']);
+
+    return await query.getOne();
+  }
+
+  async getUserFoods(userId: number, options: IPaginationOptions, user: User): Promise<Pagination<Food>> {
+    const query = this.createQueryBuilder('food');
+    query.where('food.userId = :id', { id: userId });
+    query.leftJoinAndSelect('food.user', 'user');
+    query.leftJoinAndSelect('food.restaurant', 'restaurant');
+    query.leftJoin('food.comments', 'comments').addSelect(['comments.id', 'comments.userId']);
+
     query.orderBy('food.createDate', TypeOrmEnum.DESC);
     return await paginate<Food>(query, options);
   }

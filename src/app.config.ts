@@ -11,8 +11,13 @@ export enum FilePathsEnum {
 
 export enum UrlPathsEnum {
   ID = 'id',
-  ADD_FOOD = 'add-food',
+  ADD = 'add',
+  REMOVE = 'remove',
+  ITEM_ID = 'itemId',
+
   FOOD = 'food',
+  PHOTO = 'photo',
+  INFO = 'info',
 
   RESTAURANT = 'food-restaurant',
   FOOD_TYPES = 'food-types',
@@ -20,6 +25,7 @@ export enum UrlPathsEnum {
   CATALOGS = 'catalogs',
   TAGS = 'tags',
   USER = 'user',
+  FOLLOWERS = 'followers',
 
   AUTH = 'auth',
   SINGUP = 'singup',
@@ -27,7 +33,7 @@ export enum UrlPathsEnum {
   LOGIN = 'login',
 }
 
-export const paginatorOptions = {
+export const PAGINATOR_OPTIONS = {
   PAGE: 'page',
   LIMITS: 'limits',
 

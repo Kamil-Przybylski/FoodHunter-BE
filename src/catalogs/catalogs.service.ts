@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CatalogRepository } from './entities/catalog.repository';
 import { CreateCatalogDto, CatalogDto } from './models/catalogs.models';
 import { User } from 'src/auth/entities/user.entity';
+import _ = require('lodash');
 
 @Injectable()
 export class CatalogsService {
@@ -14,7 +15,7 @@ export class CatalogsService {
 
   async getCatalogs(user: User): Promise<CatalogDto[]> {
     const catalogs = await this.catalogRepository.getAll();
-    return catalogs.map(catalog =>new CatalogDto(catalog) );
+    return _.map(catalogs || [], catalog =>new CatalogDto(catalog));
   }
 
   async createCatalog(createCatalogDto: CreateCatalogDto, user: User): Promise<CatalogDto> {

@@ -1,6 +1,7 @@
 import { Comments } from './../entities/comment.entity';
 import { IsOptional, IsString, MaxLength, IsInt } from "class-validator";
-import { UserDto } from 'src/auth/models/auth.models';
+import { UserDto, UserShortDto } from 'src/auth/models/auth.models';
+import _ = require('lodash');
 
 export class CreateCommentDto {
 
@@ -20,7 +21,7 @@ export class CommentDto { // FRONT-END DTO
   createDate: string;
   foodId: number;
 
-  user: UserDto;
+  userShort: UserShortDto;
 
   constructor(comment: Comments) {
     this.id = comment.id;
@@ -28,7 +29,7 @@ export class CommentDto { // FRONT-END DTO
     this.createDate = comment.createDate;
     this.foodId = comment.foodId;
     
-    this.user = new UserDto(comment.user);
+    this.userShort = new UserShortDto(comment.user);
   }
 }
 
@@ -38,6 +39,6 @@ export class ShortCommentDto {
 
   constructor(comments: Comments[], userId: number) {
     this.totalItems = (comments || []).length;
-    this.isMyComment = !!(comments || []).find(com => com.userId === userId);
+    this.isMyComment = !!_.find(comments || [], com => com.userId === userId);
   }
 }

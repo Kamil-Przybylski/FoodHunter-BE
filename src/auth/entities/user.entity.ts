@@ -1,5 +1,5 @@
 import { Comments } from './../../comments/entities/comment.entity';
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, RelationId } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Food } from 'src/food/entites/food.entity';
 import { Catalog } from 'src/catalogs/entities/catalog.entity';
@@ -24,9 +24,6 @@ export class User extends BaseEntity {
   @Column({ type: 'timestamptz' })
   createDate: string;
 
-  @Column({ type: 'timestamptz', nullable: true })
-  birthDate: string;
-
   @Column({ type: 'varchar', length: 255, nullable: true })
   photoPath: string;
 
@@ -36,6 +33,7 @@ export class User extends BaseEntity {
 
   @OneToMany(type => Food, food => food.user, { eager: true })
   foods: Food[];
+  foodsCount: number;
 
   @OneToMany(type => Catalog, catalog => catalog.user, { eager: true })
   catalogs: Catalog[];
@@ -47,9 +45,14 @@ export class User extends BaseEntity {
   @ManyToMany(type => User, user => user.following)
   @JoinTable()
   followers: User[];
+  followersCount: number;
+  @RelationId('followers')
+  followerIds: number[];
 
   @ManyToMany(type => User, user => user.followers)
   following: User[];
+  followingCount: number;
+
 
 
   async validatePassword(password: string): Promise<boolean> {

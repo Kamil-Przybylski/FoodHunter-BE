@@ -1,7 +1,7 @@
 import { RestaurantDto } from './../../restaurant/models/restaurant.models';
 import { IsString, MinLength, MaxLength, IsOptional } from 'class-validator';
 import { Food } from '../entites/food.entity';
-import { UserDto } from 'src/auth/models/auth.models';
+import { UserDto, UserShortDto } from 'src/auth/models/auth.models';
 import { ShortCommentDto } from 'src/comments/models/comment.models';
 import { User } from 'src/auth/entities/user.entity';
 import { FileUtil } from 'src/utils';
@@ -106,7 +106,7 @@ export class FoodDto {
   foodTypeId: number;
   createDate: string;
 
-  user: UserDto;
+  userShort: UserShortDto;
   restaurant: RestaurantDto;
   shortComment: ShortCommentDto;
 
@@ -122,7 +122,7 @@ export class FoodDto {
     this.foodTypeId = food.foodTypeId;
     this.createDate = food.createDate;
 
-    this.user = new UserDto(food.user);
+    this.userShort = new UserShortDto(food.user);
     this.restaurant = new RestaurantDto(food.restaurant);
     this.shortComment = new ShortCommentDto(food.comments, user.id );
   }

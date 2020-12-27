@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagRepository } from './entities/tag.repository';
 import { User } from 'src/auth/entities/user.entity';
+import _ = require('lodash');
 
 @Injectable()
 export class TagsService {
@@ -14,7 +15,7 @@ export class TagsService {
 
   async getAllTags(user: User): Promise<TagDto[]> {
     const tags = await this.tagRepository.getAll();
-    return tags.map(tag => new TagDto(tag))
+    return _.map(tags || [], tag => new TagDto(tag));
   }
 
   async createTag(createTagDto: CreateTagDto, user: User): Promise<TagDto> {

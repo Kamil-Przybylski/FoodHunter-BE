@@ -1,8 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import _ = require('lodash');
 import { User } from '../entities/user.entity';
 import { UserRepository } from '../entities/user.repository';
-import { UserAuthDto, UserUpdateInfoDto } from '../models/auth.models';
+import { UserAuthDto, UserDto, UserShortDto, UserUpdateInfoDto, UserUpdatePhotoDto } from '../models/auth.models';
 
 @Injectable()
 export class UserService {
@@ -11,14 +12,27 @@ export class UserService {
     private readonly userRepository: UserRepository,
   ) {}
 
-  async updateUser(userUpdateInfoDto: UserUpdateInfoDto, user: User): Promise<UserAuthDto> {
-    if (user.id !== userUpdateInfoDto.id) throw new NotFoundException('userId from path is not equal to userId from DTO');
-
-    const updatedUser = await this.userRepository.updateUser(userUpdateInfoDto, user);
-    return new UserAuthDto(updatedUser);
+  async getUser(userId: number): Promise<UserDto>  {
+    const user = await this.userRepository.getUser(userId);
+    return new UserDto(user);
   }
 
-  async getAll(): Promise<User[]> {
-    return await this.userRepository.getAll();
+  async getAllUsersNotFollowedShort(user: User): Promise<UserShortDto[]>  {
+    const userList = await this.userRepository.getAllNotFollowed(user);
+    return _.map(userList, user => new UserShortDto(user));
   }
+
+  async getUserFollowersShort(userId: number): Promise<UserShortDto[]>  {
+    const currentUser = await this.userRepository.getUserFollowers(userId);
+    return _.map(currentUser?.followers || [], user => new UserShortDto(user));
+  }
+
+  async addUserFollower(userId: number, authUser: User): Promise<void>  {
+    await this.userRepository.addUserFollower(userId, authUser);
+  }
+
+  async removeUserFollower(userId: number, authUser: User): Promise<void>  {
+    await this.userRepository.removeUserFollower(userId, authUser);
+  }
+
 }

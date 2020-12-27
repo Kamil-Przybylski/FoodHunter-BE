@@ -7,6 +7,7 @@ import { CreateFoodDto, FoodDto } from './models/food.models';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate/dist/interfaces';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Food } from './entites/food.entity';
+import _ = require('lodash');
 
 @Injectable()
 export class FoodService {
@@ -15,12 +16,30 @@ export class FoodService {
     private foodRepository: FoodRepository,
   ) {}
 
-  async getFoods(options: IPaginationOptions, user: User): Promise<Pagination<FoodDto>> {
-    const foodsPagination: Pagination<Food> = await this.foodRepository.getAll(options, user);
+  async getFoods(options: IPaginationOptions, page: string, user: User): Promise<Pagination<FoodDto>> {
+    const foodsPagination: Pagination<Food> = await this.foodRepository.getFoods(options, user);
+    const meta = foodsPagination.meta;
+    meta.currentPage = +page || 1;
     return {
-      items: foodsPagination.items.map(item => new FoodDto(item, user)),
+      items: _.map(foodsPagination?.items || [], item => new FoodDto(item, user)),
       links: foodsPagination.links,
-      meta: foodsPagination.meta,
+      meta: meta,
+    } as Pagination<FoodDto>;
+  }
+
+  async getFood(foodId: number, user: User): Promise<FoodDto> {
+    const food: Food = await this.foodRepository.getFood(foodId);
+    return new FoodDto(food, user);
+  }
+
+  async getUserFoods(userId: number, page: string, options: IPaginationOptions, user: User): Promise<Pagination<FoodDto>> {
+    const foodsPagination: Pagination<Food> = await this.foodRepository.getUserFoods(userId, options, user);
+    const meta = foodsPagination.meta;
+    meta.currentPage = +page || 1;
+    return {
+      items: _.map(foodsPagination?.items || [], item => new FoodDto(item, user)),
+      links: foodsPagination.links,
+      meta: meta,
     } as Pagination<FoodDto>;
   }
 

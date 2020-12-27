@@ -13,7 +13,6 @@ export class CommentsController {
   constructor(private readonly commentService: CommentsService) { }
 
   @Get(`${UrlPathsEnum.FOOD}/:${UrlPathsEnum.ID}`)
-  @UseGuards(AuthGuard())
   getCommentsByFoodId(
     @Param(UrlPathsEnum.ID) foodId: string,
     @GetUser() user: User
@@ -22,7 +21,6 @@ export class CommentsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard())
   createComment(
     @Body(ValidationPipe) createCommentDto: CreateCommentDto,
     @GetUser() user: User

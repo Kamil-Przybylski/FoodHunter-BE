@@ -1,14 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  ValidationPipe,
-  UseGuards,
-  UseInterceptors,
-  UploadedFile,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Query, Param } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { FoodService } from './food.service';
 import { FoodDto, CreateFoodDto, UnparsedCreateFoodDto } from './models/food.models';
@@ -17,9 +7,9 @@ import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
-import { IPaginationOptions, Pagination } from 'nestjs-typeorm-paginate';
-import { FileUtil } from 'src/utils';
-import { FilePathsEnum, paginatorOptions, UrlPathsEnum } from 'src/app.config';
+import { Pagination } from 'nestjs-typeorm-paginate';
+import { FileUtil, PaginatorUtil } from 'src/utils';
+import { FilePathsEnum, PAGINATOR_OPTIONS, UrlPathsEnum } from 'src/app.config';
 
 @Controller(UrlPathsEnum.FOOD)
 @UseGuards(AuthGuard())
@@ -27,9 +17,24 @@ export class FoodController {
   constructor(private readonly foodService: FoodService) {}
 
   @Get()
-  getFoods(@Query(paginatorOptions.PAGE) page: number = 1, @GetUser() user: User): Promise<Pagination<FoodDto>> {
-    const paginationOptions: IPaginationOptions = { page: +page, limit: paginatorOptions.food.limits };
-    return this.foodService.getFoods(paginationOptions, user);
+  getFoods(@Query(PAGINATOR_OPTIONS.PAGE) page: string, @GetUser() user: User): Promise<Pagination<FoodDto>> {
+    const paginationOptions = PaginatorUtil.getPageOptionsForInfiniteScroll(page);
+    return this.foodService.getFoods(paginationOptions, page, user);
+  }
+
+  @Get(`:${UrlPathsEnum.ID}`)
+  getFood(@Param(UrlPathsEnum.ID) foodId: number, @GetUser() user: User): Promise<FoodDto> {
+    return this.foodService.getFood(foodId, user);
+  }
+
+  @Get(`${UrlPathsEnum.USER}/:${UrlPathsEnum.ID}`)
+  getUserFoods(
+    @Param(UrlPathsEnum.ID) userId: string,
+    @Query(PAGINATOR_OPTIONS.PAGE) page: string,
+    @GetUser() user: User,
+  ): Promise<Pagination<FoodDto>> {
+    const paginationOptions = PaginatorUtil.getPageOptionsForInfiniteScroll(page);
+    return this.foodService.getUserFoods(+userId, page, paginationOptions, user);
   }
 
   @Post()
