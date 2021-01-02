@@ -13,9 +13,8 @@ const jwtConfig = config.get('jwt');
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
   constructor(
-    // eslint-disable-next-line @typescript-eslint/no-use-before-define
     @InjectRepository(UserRepository)
-    private UserRepository: UserRepository
+    private userRepository: UserRepository
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -25,7 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload): Promise<User> {
     const { username } = payload;
-    const user = await this.UserRepository.getUserData(username);
+    const user = await this.userRepository.getUserData(username);
 
     if (!user) throw new UnauthorizedException();
     return user;

@@ -51,4 +51,9 @@ export class FoodService {
     const food = await this.foodRepository.createSingle(createFoodDto, createRestaurantDto, user);
     return new FoodDto(food, user);
   }
+
+  async setLikeForFood(foodId: number, user: User): Promise<FoodDto> {
+    const food = await this.foodRepository.setLikeForFood(foodId, user.id);
+    return new FoodDto(food, user);
+  }
 }

@@ -1,6 +1,6 @@
 import { Comments } from './../entities/comment.entity';
 import { IsOptional, IsString, MaxLength, IsInt } from "class-validator";
-import { UserDto, UserShortDto } from 'src/auth/models/auth.models';
+import { UserShortDto } from 'src/auth/models/auth.models';
 import _ = require('lodash');
 
 export class CreateCommentDto {
@@ -33,7 +33,7 @@ export class CommentDto { // FRONT-END DTO
   }
 }
 
-export class ShortCommentDto {
+export class CommentInfoDto {
   totalItems: number;
   isMyComment: boolean;
 

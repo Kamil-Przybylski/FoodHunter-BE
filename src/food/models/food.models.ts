@@ -1,10 +1,11 @@
 import { RestaurantDto } from './../../restaurant/models/restaurant.models';
-import { IsString, MinLength, MaxLength, IsOptional } from 'class-validator';
+import { IsString, MinLength, MaxLength, IsOptional, IsInt } from 'class-validator';
 import { Food } from '../entites/food.entity';
-import { UserDto, UserShortDto } from 'src/auth/models/auth.models';
-import { ShortCommentDto } from 'src/comments/models/comment.models';
+import { UserShortDto } from 'src/auth/models/auth.models';
+import { CommentInfoDto } from 'src/comments/models/comment.models';
 import { User } from 'src/auth/entities/user.entity';
 import { FileUtil } from 'src/utils';
+import _ = require('lodash');
 
 export class UnparsedCreateFoodDto {
   @IsString()
@@ -58,6 +59,11 @@ export class UnparsedCreateFoodDto {
   restaurantTypes: string;
 }
 
+export class SetLikeForFoodDto {
+  @IsInt()
+  foodId: number;
+}
+
 export class CreateFoodDto {
   name: string;
   description: string;
@@ -94,6 +100,16 @@ export class CreateFoodDto {
 }
 
 // FRONT-END DTO
+export class LikesInfoDto {
+  totalItems: number;
+  isMyLike: boolean;
+
+  constructor(likes: User[], userId: number) {
+    this.totalItems = (likes || []).length;
+    this.isMyLike = !!_.find(likes || [], user => user.id === userId);
+  }
+}
+
 export class FoodDto {
   id: number;
   name: string;
@@ -108,7 +124,8 @@ export class FoodDto {
 
   userShort: UserShortDto;
   restaurant: RestaurantDto;
-  shortComment: ShortCommentDto;
+  commentInfo: CommentInfoDto;
+  likesInfo: LikesInfoDto;
 
   constructor(food: Food, user: User) {
     this.id = food.id;
@@ -122,8 +139,11 @@ export class FoodDto {
     this.foodTypeId = food.foodTypeId;
     this.createDate = food.createDate;
 
+    // console.log('GET food ======>', food);
+
     this.userShort = new UserShortDto(food.user);
     this.restaurant = new RestaurantDto(food.restaurant);
-    this.shortComment = new ShortCommentDto(food.comments, user.id );
+    this.commentInfo = new CommentInfoDto(food.comments, user.id);
+    this.likesInfo = new LikesInfoDto(food.likes, user.id);
   }
 }

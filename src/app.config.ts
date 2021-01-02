@@ -26,6 +26,7 @@ export enum UrlPathsEnum {
   TAGS = 'tags',
   USER = 'user',
   FOLLOWERS = 'followers',
+  LIKES = 'likes',
 
   AUTH = 'auth',
   SINGUP = 'singup',

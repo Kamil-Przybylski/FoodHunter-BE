@@ -1,8 +1,8 @@
-import { Comments } from './../../comments/entities/comment.entity';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, RelationId } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { Food } from 'src/food/entites/food.entity';
 import { Catalog } from 'src/catalogs/entities/catalog.entity';
+import { Comments } from 'src/comments/entities/comment.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -40,6 +40,9 @@ export class User extends BaseEntity {
 
   @OneToMany(type => Comments, comments => comments.user, { eager: true })
   comments: Comments[];
+
+  @ManyToMany(type => Food, food => food.likes)
+  likes: Food[];
 
 
   @ManyToMany(type => User, user => user.following)

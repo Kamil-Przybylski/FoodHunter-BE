@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Query, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Query, Param, Put } from '@nestjs/common';
 import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { FoodService } from './food.service';
-import { FoodDto, CreateFoodDto, UnparsedCreateFoodDto } from './models/food.models';
+import { FoodDto, CreateFoodDto, UnparsedCreateFoodDto, SetLikeForFoodDto } from './models/food.models';
 import { User } from 'src/auth/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -58,5 +58,14 @@ export class FoodController {
       new CreateRestaurantDto(createFoodDto),
       user,
     );
+  }
+
+  @Put(`${UrlPathsEnum.LIKES}`)
+  setLikeForFood(
+    @Body(ValidationPipe)
+    setLikeForFoodDto: SetLikeForFoodDto,
+    @GetUser() user: User,
+  ): Promise<FoodDto> {
+    return this.foodService.setLikeForFood(setLikeForFoodDto.foodId, user);
   }
 }
