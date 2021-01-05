@@ -1,6 +1,6 @@
-import { IsString, MinLength, MaxLength, Matches, IsEmail, IsOptional, IsDate, IsNumber, IsDateString, IsNotEmpty } from "class-validator";
-import { FileUtil } from "src/utils";
-import { User } from "../entities/user.entity";
+import { IsString, MinLength, MaxLength, Matches, IsEmail, IsOptional, IsDate, IsNumber, IsDateString, IsNotEmpty } from 'class-validator';
+import { FileUtil } from '../../utils';
+import { User } from '../entities/user.entity';
 
 export class AuthSingupDto {
   @IsString()
@@ -20,12 +20,10 @@ export class AuthSingupDto {
   @Matches(
     // /((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/,
     /.*/,
-    { message: 'Wymagana min. 1 wielka litera i min. 1 znak specjalny.' }
+    { message: 'Wymagana min. 1 wielka litera i min. 1 znak specjalny.' },
   )
   password: string;
 }
-
-
 
 export class AuthSingInDto {
   @IsString()
@@ -38,7 +36,7 @@ export class AuthSingInDto {
 
 export class UserUpdateInfoDto {
   @IsNumber()
-  id: string;
+  id: number;
 
   @IsString()
   @MinLength(1)
@@ -60,8 +58,9 @@ export class UserUpdatePhotoDto {
   }
 }
 
-export class UserAuthDto { // FRONT-END DTO
-  id: number; 
+export class UserAuthDto {
+  // FRONT-END DTO
+  id: number;
   username: string;
   email: string;
   photoPath: string;
@@ -71,16 +70,17 @@ export class UserAuthDto { // FRONT-END DTO
 
   constructor(user: User) {
     this.id = user.id;
-    this.username = user.username; 
+    this.username = user.username;
     this.email = user.email;
-    this.photoPath = FileUtil.returnDefaultAvatar(user.photoPath);;
+    this.photoPath = FileUtil.returnDefaultAvatar(user.photoPath);
     this.about = user.about;
     this.foodsCount = user.foodsCount || 0;
     this.followersCount = user.followersCount || 0;
   }
 }
 
-export class UserDto { // FRONT-END DTO
+export class UserDto {
+  // FRONT-END DTO
   id: number;
   username: string;
   about: string;
@@ -90,7 +90,7 @@ export class UserDto { // FRONT-END DTO
 
   constructor(user: User) {
     this.id = user.id;
-    this.username = user.username; 
+    this.username = user.username;
     this.about = user.about;
     this.photoPath = FileUtil.returnDefaultAvatar(user.photoPath);
     this.foodsCount = user.foodsCount || 0;
@@ -98,14 +98,15 @@ export class UserDto { // FRONT-END DTO
   }
 }
 
-export class UserShortDto { // FRONT-END DTO
+export class UserShortDto {
+  // FRONT-END DTO
   id: number;
   username: string;
   photoPath: string;
 
   constructor(user: User) {
     this.id = user.id;
-    this.username = user.username; 
+    this.username = user.username;
     this.photoPath = FileUtil.returnDefaultAvatar(user.photoPath);
   }
 }

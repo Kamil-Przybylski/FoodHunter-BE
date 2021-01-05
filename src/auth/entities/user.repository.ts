@@ -1,9 +1,9 @@
 import { Repository, EntityRepository } from 'typeorm';
-import { User } from 'src/auth/entities/user.entity';
 import { AuthSingupDto, AuthSingInDto, UserUpdatePhotoDto, UserUpdateInfoDto } from '../models/auth.models';
 import * as bcrypt from 'bcrypt';
 import { ConflictException, InternalServerErrorException } from '@nestjs/common';
 import * as _ from 'lodash';
+import { User } from './user.entity';
 
 @EntityRepository(User)
 export class UserRepository extends Repository<User> {
@@ -20,7 +20,7 @@ export class UserRepository extends Repository<User> {
     return await query.getOne();
   }
 
-  async singUp(authSingupDto: AuthSingupDto): Promise<void> {
+  async signUp(authSingupDto: AuthSingupDto): Promise<void> {
     const { username, email, password } = authSingupDto;
 
     const user = this.create();
@@ -41,7 +41,7 @@ export class UserRepository extends Repository<User> {
     return bcrypt.hash(password, salt);
   }
 
-  async validateUserPassword(authSingInDto: AuthSingInDto): Promise<User> {
+  async validatePasswordAndReturnUser(authSingInDto: AuthSingInDto): Promise<User> {
     const { email, password } = authSingInDto;
     const user = await this.getUserData(email, true);
 
@@ -76,9 +76,9 @@ export class UserRepository extends Repository<User> {
     return user;
   }
 
-  async addUserFollower(userId: number, authUser: User): Promise<void> {
+  async addUserFollower(followerId: number, authUser: User): Promise<void> {
     const follower = await this.createQueryBuilder('user')
-      .where('user.id = :id', { id: userId })
+      .where('user.id = :id', { id: followerId })
       .getOne();
     const followerFollowers = await this.createQueryBuilder('user')
       .where('user.id IN (:...ids)', {
@@ -102,19 +102,19 @@ export class UserRepository extends Repository<User> {
     }
   }
 
-  async removeUserFollower(userId: number, authUser: User): Promise<void> {
+  async removeUserFollower(followerId: number, authUser: User): Promise<void> {
     const user = await this.createQueryBuilder('user')
       .where('user.id = :id', { id: authUser.id })
       .leftJoinAndSelect('user.followers', 'follower')
       .getOne();
 
     const follower = await this.createQueryBuilder('user')
-      .where('user.id = :id', { id: userId })
+      .where('user.id = :id', { id: followerId })
       .leftJoinAndSelect('user.followers', 'follower')
       .getOne();
 
-    user.followers = _.filter(user.followers, follower => follower.id !== userId);
-    follower.followers = _.filter(follower.followers, follower => follower.id !== userId);
+    user.followers = _.filter(user.followers, follower => follower.id !== followerId);
+    follower.followers = _.filter(follower.followers, follower => follower.id !== followerId);
 
     try {
       await user.save();

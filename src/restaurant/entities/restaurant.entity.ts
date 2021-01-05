@@ -1,5 +1,5 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, PrimaryColumn } from 'typeorm';
-import { Food } from 'src/food/entites/food.entity';
+import { Food } from '../../food/entites/food.entity';
 
 export const JOIN_KEY = '$$$';
 

@@ -1,11 +1,11 @@
 import { RestaurantDto } from './../../restaurant/models/restaurant.models';
 import { IsString, MinLength, MaxLength, IsOptional, IsInt } from 'class-validator';
 import { Food } from '../entites/food.entity';
-import { UserShortDto } from 'src/auth/models/auth.models';
-import { CommentInfoDto } from 'src/comments/models/comment.models';
-import { User } from 'src/auth/entities/user.entity';
-import { FileUtil } from 'src/utils';
 import _ = require('lodash');
+import { FileUtil } from '../../utils';
+import { User } from '../../auth/entities/user.entity';
+import { UserShortDto } from '../../auth/models/auth.models';
+import { CommentInfoDto } from '../../comments/models/comment.models';
 
 export class UnparsedCreateFoodDto {
   @IsString()

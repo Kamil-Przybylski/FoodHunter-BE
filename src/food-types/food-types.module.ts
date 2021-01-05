@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { FoodTypesController } from './food-types.controller';
 import { FoodTypesService } from './food-types.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AuthModule } from 'src/auth/auth.module';
 import { FoodTypeRepository } from './entities/food-type.repository';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   controllers: [FoodTypesController],

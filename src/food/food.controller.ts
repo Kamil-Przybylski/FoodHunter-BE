@@ -1,15 +1,15 @@
 import { Controller, Get, Post, Body, ValidationPipe, UseGuards, UseInterceptors, UploadedFile, Query, Param, Put } from '@nestjs/common';
-import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { FoodService } from './food.service';
 import { FoodDto, CreateFoodDto, UnparsedCreateFoodDto, SetLikeForFoodDto } from './models/food.models';
-import { User } from 'src/auth/entities/user.entity';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
 import { Pagination } from 'nestjs-typeorm-paginate';
-import { FileUtil, PaginatorUtil } from 'src/utils';
-import { FilePathsEnum, PAGINATOR_OPTIONS, UrlPathsEnum } from 'src/app.config';
+import { GetUser } from '../auth/decorators/get-user.decorator';
+import { User } from '../auth/entities/user.entity';
+import { FilePathsEnum, PAGINATOR_OPTIONS, UrlPathsEnum } from '../app.config';
+import { FileUtil, PaginatorUtil } from '../utils';
+import { CreateRestaurantDto } from '../restaurant/models/restaurant.models';
 
 @Controller(UrlPathsEnum.FOOD)
 @UseGuards(AuthGuard())

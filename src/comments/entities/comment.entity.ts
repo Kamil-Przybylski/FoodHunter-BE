@@ -1,6 +1,6 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, Unique, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
-import { User } from 'src/auth/entities/user.entity';
-import { Food } from 'src/food/entites/food.entity';
+import { User } from '../../auth/entities/user.entity';
+import { Food } from '../../food/entites/food.entity';
 
 @Entity()
 export class Comments extends BaseEntity {

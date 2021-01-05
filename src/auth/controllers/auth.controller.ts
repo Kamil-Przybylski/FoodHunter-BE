@@ -12,10 +12,10 @@ import { AccessToken } from '../models/jwt.models';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../decorators/get-user.decorator';
 import { User } from '../entities/user.entity';
-import { FilePathsEnum, UrlPathsEnum } from 'src/app.config';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { FileUtil } from 'src/utils';
+import { FilePathsEnum, UrlPathsEnum } from '../../app.config';
+import { FileUtil } from '../../utils';
 
 @Controller(UrlPathsEnum.AUTH)
 export class AuthController {

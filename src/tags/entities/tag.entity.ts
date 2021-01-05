@@ -1,5 +1,5 @@
-import { Food } from 'src/food/entites/food.entity';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
+import { Food } from '../../food/entites/food.entity';
 
 @Entity()
 export class Tag extends BaseEntity {

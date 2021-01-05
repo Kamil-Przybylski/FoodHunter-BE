@@ -2,8 +2,8 @@ import { TagDto, CreateTagDto, AddFoodToTagDto } from './models/tag.models';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { TagRepository } from './entities/tag.repository';
-import { User } from 'src/auth/entities/user.entity';
 import _ = require('lodash');
+import { User } from '../auth/entities/user.entity';
 
 @Injectable()
 export class TagsService {

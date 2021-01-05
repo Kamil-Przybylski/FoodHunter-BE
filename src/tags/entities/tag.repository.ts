@@ -1,8 +1,8 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Tag } from './tag.entity';
-import { User } from 'src/auth/entities/user.entity';
 import { CreateTagDto } from '../models/tag.models';
 import { InternalServerErrorException } from '@nestjs/common';
+import { User } from '../../auth/entities/user.entity';
 
 @EntityRepository(Tag)
 export class TagRepository extends Repository<Tag> {

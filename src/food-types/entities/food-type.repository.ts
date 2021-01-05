@@ -1,8 +1,8 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { FoodType } from './food-type.entity';
 import { CreateFoodTypeDto } from '../models/food-type.models';
-import { User } from 'src/auth/entities/user.entity';
 import { InternalServerErrorException } from '@nestjs/common';
+import { User } from '../../auth/entities/user.entity';
 
 @EntityRepository(FoodType)
 export class FoodTypeRepository extends Repository<FoodType> {

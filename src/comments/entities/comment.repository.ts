@@ -1,9 +1,9 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Comments } from './comment.entity';
 import { CreateCommentDto } from '../models/comment.models';
-import { User } from 'src/auth/entities/user.entity';
 import { InternalServerErrorException } from '@nestjs/common';
-import { TypeOrmEnum } from 'src/typeorm.config';
+import { User } from '../../auth/entities/user.entity';
+import { TypeOrmEnum } from '../../typeorm.config';
 
 @EntityRepository(Comments)
 export class CommentsRepository extends Repository<Comments> {

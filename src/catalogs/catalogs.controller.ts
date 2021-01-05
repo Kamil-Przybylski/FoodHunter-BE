@@ -1,11 +1,11 @@
 import { FoodDto } from './../food/models/food.models';
 import { Controller, Get, UseGuards, Post, Body, ValidationPipe, Param, ParseIntPipe } from '@nestjs/common';
 import { CatalogsService } from './catalogs.service';
-import { GetUser } from 'src/auth/decorators/get-user.decorator';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/auth/entities/user.entity';
 import { CreateCatalogDto, CatalogDto } from './models/catalogs.models';
-import { UrlPathsEnum } from 'src/app.config';
+import { User } from '../auth/entities/user.entity';
+import { UrlPathsEnum } from '../app.config';
+import { GetUser } from '../auth/decorators/get-user.decorator';
 
 @Controller(`${UrlPathsEnum.CATALOGS}`)
 @UseGuards(AuthGuard())

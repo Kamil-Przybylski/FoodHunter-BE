@@ -4,8 +4,8 @@ import {
 } from 'typeorm';
 import { Restaurant } from './restaurant.entity';
 import { CreateSingleRestaurantDto } from '../models/restaurant.models';
-import { User } from 'src/auth/entities/user.entity';
 import { InternalServerErrorException } from '@nestjs/common';
+import { User } from '../../auth/entities/user.entity';
 
 @EntityRepository(Restaurant)
 export class RestaurantRepository extends Repository<

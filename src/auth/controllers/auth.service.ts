@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { UserRepository } from 'src/auth/entities/user.repository';
 import { AuthSingInDto, AuthSingupDto, UserAuthDto, UserUpdateInfoDto, UserUpdatePhotoDto } from '../models/auth.models';
 import { JwtService } from '@nestjs/jwt';
 import { AccessToken, JwtPayload } from '../models/jwt.models';
 import { User } from '../entities/user.entity';
+import { UserRepository } from '../entities/user.repository';
 
 @Injectable()
 export class AuthService {
@@ -15,11 +15,11 @@ export class AuthService {
   ) {}
 
   async singUp(authSingupDto: AuthSingupDto): Promise<void> {
-    return this.userRepository.singUp(authSingupDto);
+    return this.userRepository.signUp(authSingupDto);
   }
 
   async singIn(authCredentialsDto: AuthSingInDto): Promise<AccessToken> {
-    const user = await this.userRepository.validateUserPassword(authCredentialsDto);
+    const user = await this.userRepository.validatePasswordAndReturnUser(authCredentialsDto);
 
     if (!user) throw new UnauthorizedException('Invalid credentials');
 
@@ -33,10 +33,10 @@ export class AuthService {
     return new UserAuthDto(user);
   }
 
-  async updateUser(userUpdateDto: UserUpdateInfoDto | UserUpdatePhotoDto, user: User): Promise<UserAuthDto> {
-    if (user.id !== userUpdateDto.id) throw new NotFoundException('userId from path is not equal to userId from DTO');
+  async updateUser(userUpdateDto: UserUpdateInfoDto | UserUpdatePhotoDto, authUser: User): Promise<UserAuthDto> {
+    if (authUser.id !== userUpdateDto.id) throw new NotFoundException('userId from path is not equal to userId from DTO');
 
-    const updatedUser = await this.userRepository.updateUser(userUpdateDto, user);
+    const updatedUser = await this.userRepository.updateUser(userUpdateDto, authUser);
     return new UserAuthDto(updatedUser);
   }
 }

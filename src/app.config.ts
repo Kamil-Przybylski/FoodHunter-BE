@@ -38,5 +38,5 @@ export const PAGINATOR_OPTIONS = {
   PAGE: 'page',
   LIMITS: 'limits',
 
-  food: { limits: 3 },
+  food: { limits: 12 },
 };

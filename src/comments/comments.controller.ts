@@ -1,10 +1,10 @@
 import { Controller, UseGuards, Post, Body, ValidationPipe, Get, Param } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { UrlPathsEnum } from '../app.config';
+import { GetUser } from '../auth/decorators/get-user.decorator';
+import { User } from '../auth/entities/user.entity';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto, CommentDto } from './models/comment.models';
-import { GetUser } from 'src/auth/decorators/get-user.decorator';
-import { User } from 'src/auth/entities/user.entity';
-import { UrlPathsEnum } from 'src/app.config';
 
 @Controller(UrlPathsEnum.COMMENTS)
 @UseGuards(AuthGuard())

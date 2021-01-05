@@ -11,15 +11,17 @@ const jwtConfig = config.get('jwt');
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-
   constructor(
     @InjectRepository(UserRepository)
-    private userRepository: UserRepository
+    private userRepository: UserRepository,
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: process.env.JWT_SECRET || jwtConfig.secret
-    })
+      secretOrKey: process.env.JWT_SECRET || jwtConfig.secret || 'test',
+    });
+
+    if (!(process.env.JWT_SECRET || jwtConfig.secret))
+      console.warn('ERROR: There is a problem with jwt secret string! Secret key not found...');
   }
 
   async validate(payload: JwtPayload): Promise<User> {

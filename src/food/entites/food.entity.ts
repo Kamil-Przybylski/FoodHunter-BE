@@ -1,10 +1,10 @@
 import { Restaurant } from './../../restaurant/entities/restaurant.entity';
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany, ManyToMany, JoinTable } from 'typeorm';
-import { User } from 'src/auth/entities/user.entity';
-import { FoodType } from 'src/food-types/entities/food-type.entity';
-import { Comments } from 'src/comments/entities/comment.entity';
-import { Tag } from 'src/tags/entities/tag.entity';
-import { Catalog } from 'src/catalogs/entities/catalog.entity';
+import { User } from '../../auth/entities/user.entity';
+import { FoodType } from '../../food-types/entities/food-type.entity';
+import { Comments } from '../../comments/entities/comment.entity';
+import { Catalog } from '../../catalogs/entities/catalog.entity';
+import { Tag } from '../../tags/entities/tag.entity';
 
 @Entity()
 export class Food extends BaseEntity {

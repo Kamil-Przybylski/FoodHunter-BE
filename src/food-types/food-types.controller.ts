@@ -1,10 +1,10 @@
 import { Controller, Get, Post, Body, UseGuards, ValidationPipe } from '@nestjs/common';
 import { FoodTypesService } from './food-types.service';
-import { GetUser } from 'src/auth/decorators/get-user.decorator';
-import { User } from 'src/auth/entities/user.entity';
 import { CreateFoodTypeDto, FoodTypeDto } from './models/food-type.models';
 import { AuthGuard } from '@nestjs/passport';
-import { UrlPathsEnum } from 'src/app.config';
+import { UrlPathsEnum } from '../app.config';
+import { GetUser } from '../auth/decorators/get-user.decorator';
+import { User } from '../auth/entities/user.entity';
 
 @Controller(UrlPathsEnum.FOOD_TYPES)
 @UseGuards(AuthGuard())

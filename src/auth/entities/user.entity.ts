@@ -1,8 +1,8 @@
 import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable, RelationId } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { Food } from 'src/food/entites/food.entity';
-import { Catalog } from 'src/catalogs/entities/catalog.entity';
-import { Comments } from 'src/comments/entities/comment.entity';
+import { Food } from '../../food/entites/food.entity';
+import { Catalog } from '../../catalogs/entities/catalog.entity';
+import { Comments } from '../../comments/entities/comment.entity';
 
 @Entity()
 export class User extends BaseEntity {

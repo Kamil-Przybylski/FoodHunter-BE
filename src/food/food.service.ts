@@ -2,12 +2,12 @@ import { CreateRestaurantDto } from './../restaurant/models/restaurant.models';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FoodRepository } from './entites/food.repository';
-import { User } from 'src/auth/entities/user.entity';
 import { CreateFoodDto, FoodDto } from './models/food.models';
 import { IPaginationOptions } from 'nestjs-typeorm-paginate/dist/interfaces';
 import { Pagination } from 'nestjs-typeorm-paginate';
 import { Food } from './entites/food.entity';
 import _ = require('lodash');
+import { User } from '../auth/entities/user.entity';
 
 @Injectable()
 export class FoodService {

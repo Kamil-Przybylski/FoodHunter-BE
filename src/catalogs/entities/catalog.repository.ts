@@ -1,8 +1,8 @@
 import { Repository, EntityRepository } from 'typeorm';
 import { Catalog } from './catalog.entity';
-import { User } from 'src/auth/entities/user.entity';
 import { CreateCatalogDto } from '../models/catalogs.models';
 import { InternalServerErrorException } from '@nestjs/common';
+import { User } from '../../auth/entities/user.entity';
 
 @EntityRepository(Catalog)
 export class CatalogRepository extends Repository<Catalog> {

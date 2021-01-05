@@ -1,7 +1,7 @@
 import { Comments } from './../entities/comment.entity';
 import { IsOptional, IsString, MaxLength, IsInt } from "class-validator";
-import { UserShortDto } from 'src/auth/models/auth.models';
 import _ = require('lodash');
+import { UserShortDto } from '../../auth/models/auth.models';
 
 export class CreateCommentDto {
 

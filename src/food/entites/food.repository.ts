@@ -1,15 +1,15 @@
 import { Repository, EntityRepository, getConnection } from 'typeorm';
 import { Food } from './food.entity';
-import { User } from 'src/auth/entities/user.entity';
 import { CreateFoodDto } from '../models/food.models';
 import { InternalServerErrorException } from '@nestjs/common';
-import { CreateRestaurantDto } from 'src/restaurant/models/restaurant.models';
-import { Restaurant } from 'src/restaurant/entities/restaurant.entity';
 import * as fs from 'fs';
 import * as path from 'path';
 import { IPaginationOptions, paginate, Pagination } from 'nestjs-typeorm-paginate';
-import { TypeOrmEnum } from 'src/typeorm.config';
 import _ = require('lodash');
+import { User } from '../../auth/entities/user.entity';
+import { TypeOrmEnum } from '../../typeorm.config';
+import { CreateRestaurantDto } from '../../restaurant/models/restaurant.models';
+import { Restaurant } from '../../restaurant/entities/restaurant.entity';
 
 @EntityRepository(Food)
 export class FoodRepository extends Repository<Food> {
@@ -97,7 +97,7 @@ export class FoodRepository extends Repository<Food> {
     userQuery.leftJoin('user.likes', 'likes').addSelect('likes.id');
     const user = await userQuery.getOne();
 
-    if (_.findIndex(food.likes, userLikes => userLikes.id === user.id) !== -1) {
+    if (_.findIndex(food.likes, userLike => userLike.id === user.id) !== -1) {
       food.likes = _.filter(food.likes, userLike => userLike.id !== user.id);
       user.likes = _.filter(user.likes, foodLike => foodLike.id !== foodId);
     } else {

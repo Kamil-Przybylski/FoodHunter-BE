@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { User } from 'src/auth/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RestaurantRepository } from './entities/restaurant.repository';
 import { CreateSingleRestaurantDto, RestaurantDto } from './models/restaurant.models';
 import _ = require('lodash');
+import { User } from '../auth/entities/user.entity';
 
 @Injectable()
 export class RestaurantService {

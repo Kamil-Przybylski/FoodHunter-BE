@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCommentDto, CommentDto } from './models/comment.models';
-import { User } from 'src/auth/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CommentsRepository } from './entities/comment.repository';
 import _ = require('lodash');
+import { User } from '../auth/entities/user.entity';
 
 @Injectable()
 export class CommentsService {

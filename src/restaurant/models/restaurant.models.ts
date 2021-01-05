@@ -1,6 +1,6 @@
 import { IsString, MinLength, MaxLength, IsInt, IsArray } from 'class-validator';
+import { UnparsedCreateFoodDto } from '../../food/models/food.models';
 import { Restaurant, JOIN_KEY } from '../entities/restaurant.entity';
-import { UnparsedCreateFoodDto } from 'src/food/models/food.models';
 
 export class CreateSingleRestaurantDto {
   @IsString()
